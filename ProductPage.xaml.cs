@@ -23,6 +23,10 @@ namespace Muhametshin41razmer
         public ProductPage()
         {
             InitializeComponent();
+
+            var currentProducts = Muhametshin41Entities.GetContext().Product.ToList();
+
+            ProductListView.ItemsSource = currentProducts;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
