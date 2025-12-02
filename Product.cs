@@ -32,7 +32,9 @@ namespace Muhametshin41razmer
         public int ProductQuantityInStock { get; set; }
         public string ProductDescription { get; set; }
         public string ProductPhoto { get; set; }
-        public string ProductPhotoPath {
+        public string ProductStatus { get; set; }
+        public string ProductPhotoPath
+        {
             get
             {
                 if (ProductPhoto == null)
@@ -43,8 +45,7 @@ namespace Muhametshin41razmer
                 return "Товар_import/" + ProductPhoto;
             }
         }
-        public string ProductStatus { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderProduct> OrderProduct { get; set; }
     }

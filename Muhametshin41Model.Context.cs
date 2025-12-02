@@ -16,13 +16,14 @@ namespace Muhametshin41razmer
     public partial class Muhametshin41Entities : DbContext
     {
         private static Muhametshin41Entities _context;
-
+        
         public static Muhametshin41Entities GetContext()
         {
-            if (_context == null)
+            if(_context == null)
             {
                 _context = new Muhametshin41Entities();
             }
+
             return _context;
         }
 
