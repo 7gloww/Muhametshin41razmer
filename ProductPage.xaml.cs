@@ -21,9 +21,20 @@ namespace Muhametshin41razmer
     public partial class ProductPage : Page
     {
         int currentNumRecords, AllNumRecords;
-        public ProductPage()
+        public ProductPage(User user)
         {
             InitializeComponent();
+
+            FIOTB.Text = user.UserSurname + " " + user.UserName + " " + user.UserPatronymic;
+            switch (user.UserRole)
+            {
+                case 1:
+                    RoleTB.Text = "Клиент";break;
+                case 2:
+                    RoleTB.Text = "Менеджер"; break;
+                case 3:
+                    RoleTB.Text = "Администратор"; break;
+            }
 
             var currentProducts = Muhametshin41Entities.GetContext().Product.ToList();
 
@@ -46,23 +57,15 @@ namespace Muhametshin41razmer
             }
             if (ComboType.SelectedIndex == 1)
             {
-                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 0 && (p.ProductDiscountAmount) < 5)).ToList();
+                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 0 && (p.ProductDiscountAmount) < 10)).ToList();
             }
             if (ComboType.SelectedIndex == 2)
             {
-                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 5 && (p.ProductDiscountAmount) < 15)).ToList();
+                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 10 && (p.ProductDiscountAmount) < 15)).ToList();
             }
             if (ComboType.SelectedIndex == 3)
             {
-                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 15 && (p.ProductDiscountAmount) < 30)).ToList();
-            }
-            if (ComboType.SelectedIndex == 4)
-            {
-                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 30 && (p.ProductDiscountAmount) < 70)).ToList();
-            }
-            if (ComboType.SelectedIndex == 5)
-            {
-                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 70 && (p.ProductDiscountAmount) <= 100)).ToList();
+                currentProducts = currentProducts.Where(p => ((p.ProductDiscountAmount) >= 15 && (p.ProductDiscountAmount) <= 100)).ToList();
             }
 
             currentProducts = currentProducts.Where(p => p.ProductName.ToLower().Contains(TBoxSearch.Text.ToLower())).ToList();

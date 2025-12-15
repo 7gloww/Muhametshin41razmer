@@ -7,13 +7,36 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ProductPage" FontFamily="Comic Sans MS">
-
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Вы авторизованы как: " FontSize="20" Grid.Row="0" Grid.Column="0"></TextBlock>
+            <TextBlock Name="FIOTB" FontSize="20" Grid.Row="0" Grid.Column="1"></TextBlock>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Роль: " FontSize="20" Grid.Row="0" Grid.Column="0"></TextBlock>
+            <TextBlock Name="RoleTB" FontSize="20" Grid.Row="0" Grid.Column="1"></TextBlock>
+        </Grid>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -47,16 +70,14 @@
                            Width="250" FontSize="20"></TextBlock>
                 <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged"
                           FontSize="15" Width="200">
-                    <TextBlock>Все</TextBlock>
-                    <TextBlock> от 0 до 5%</TextBlock>
-                    <TextBlock> от 5 до 15%</TextBlock>
-                    <TextBlock> от 15 до 30%</TextBlock>
-                    <TextBlock> от 30 до 70%</TextBlock>
-                    <TextBlock> от 70 до 100%</TextBlock>
+                    <TextBlock>Все диапазоны</TextBlock>
+                    <TextBlock> от 0 до 9,99%</TextBlock>
+                    <TextBlock> от 10 до 14,99%</TextBlock>
+                    <TextBlock> от 15% и более</TextBlock>
                 </ComboBox>
             </StackPanel>
         </Grid>
-        <ListView Name="ProductListView" Grid.Row="1">
+        <ListView Name="ProductListView" Grid.Row="3">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

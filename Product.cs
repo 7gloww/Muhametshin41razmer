@@ -26,7 +26,7 @@ namespace Muhametshin41razmer
         public decimal ProductCost { get; set; }
         public int ProductMaxDiscount { get; set; }
         public string ProductManufacturer { get; set; }
-        public string ProductSupplier { get; set; }
+        public string ProdcutSupplier { get; set; }
         public string ProductCategory { get; set; }
         public byte ProductDiscountAmount { get; set; }
         public int ProductQuantityInStock { get; set; }

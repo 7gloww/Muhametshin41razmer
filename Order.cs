@@ -24,7 +24,7 @@ namespace Muhametshin41razmer
         public System.DateTime OrderDate { get; set; }
         public System.DateTime OrderDeliveryDate { get; set; }
         public int OrderPickupPoint { get; set; }
-        public Nullable<int> OrderClient { get; set; }
+        public Nullable<int> OrderClientID { get; set; }
         public int OrderCode { get; set; }
         public string OrderStatus { get; set; }
     

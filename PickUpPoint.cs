@@ -22,9 +22,9 @@ namespace Muhametshin41razmer
     
         public int PickUpPointID { get; set; }
         public int PickUpPointIndex { get; set; }
-        public string PickUpPointCity { get; set; }
-        public string PickUpPointStreet { get; set; }
-        public int PickUpPointHouse { get; set; }
+        public string PickUpCity { get; set; }
+        public string PickUpStreet { get; set; }
+        public int PickUpHouse { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Order { get; set; }

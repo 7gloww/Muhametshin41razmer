@@ -13,7 +13,7 @@
           <Property Name="OrderDate" Type="date" Nullable="false" />
           <Property Name="OrderDeliveryDate" Type="date" Nullable="false" />
           <Property Name="OrderPickupPoint" Type="int" Nullable="false" />
-          <Property Name="OrderClient" Type="int" />
+          <Property Name="OrderClientID" Type="int" />
           <Property Name="OrderCode" Type="int" Nullable="false" />
           <Property Name="OrderStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -32,9 +32,9 @@
           </Key>
           <Property Name="PickUpPointID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PickUpPointIndex" Type="int" Nullable="false" />
-          <Property Name="PickUpPointCity" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="PickUpPointStreet" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="PickUpPointHouse" Type="int" Nullable="false" />
+          <Property Name="PickUpCity" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PickUpStreet" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PickUpHouse" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -46,7 +46,7 @@
           <Property Name="ProductCost" Type="decimal" Precision="19" Scale="2" Nullable="false" />
           <Property Name="ProductMaxDiscount" Type="int" Nullable="false" />
           <Property Name="ProductManufacturer" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ProductSupplier" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProdcutSupplier" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProductCategory" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ProductDiscountAmount" Type="tinyint" Nullable="false" />
           <Property Name="ProductQuantityInStock" Type="int" Nullable="false" />
@@ -68,9 +68,9 @@
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserSurname" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UserPatronymic" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UserLogin" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UserPassword" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserPatronymic" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserLogin" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="UserPassword" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="UserRole" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__OrderProd__Order__403A8C7D">
@@ -121,7 +121,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_User">
+        <Association Name="FK_Order_User1">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -129,7 +129,7 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Order">
-              <PropertyRef Name="OrderClient" />
+              <PropertyRef Name="OrderClientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -156,7 +156,7 @@
             <End Role="PickUpPoint" EntitySet="PickUpPoint" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+          <AssociationSet Name="FK_Order_User1" Association="Self.FK_Order_User1">
             <End Role="User" EntitySet="User" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
@@ -174,12 +174,12 @@
           <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="OrderDeliveryDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="OrderPickupPoint" Type="Int32" Nullable="false" />
-          <Property Name="OrderClient" Type="Int32" />
+          <Property Name="OrderClientID" Type="Int32" />
           <Property Name="OrderCode" Type="Int32" Nullable="false" />
           <Property Name="OrderStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="OrderProduct" Relationship="Self.FK__OrderProd__Order__403A8C7D" FromRole="Order" ToRole="OrderProduct" />
           <NavigationProperty Name="PickUpPoint" Relationship="Self.FK_Order_PickUpPoint" FromRole="Order" ToRole="PickUpPoint" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Order_User" FromRole="Order" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Order_User1" FromRole="Order" ToRole="User" />
         </EntityType>
         <EntityType Name="OrderProduct">
           <Key>
@@ -198,9 +198,9 @@
           </Key>
           <Property Name="PickUpPointID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PickUpPointIndex" Type="Int32" Nullable="false" />
-          <Property Name="PickUpPointCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PickUpPointStreet" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PickUpPointHouse" Type="Int32" Nullable="false" />
+          <Property Name="PickUpCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PickUpStreet" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PickUpHouse" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_PickUpPoint" FromRole="PickUpPoint" ToRole="Order" />
         </EntityType>
         <EntityType Name="Product">
@@ -213,7 +213,7 @@
           <Property Name="ProductCost" Type="Decimal" Precision="19" Scale="2" Nullable="false" />
           <Property Name="ProductMaxDiscount" Type="Int32" Nullable="false" />
           <Property Name="ProductManufacturer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductSupplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProdcutSupplier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProductCategory" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProductDiscountAmount" Type="Byte" Nullable="false" />
           <Property Name="ProductQuantityInStock" Type="Int32" Nullable="false" />
@@ -237,11 +237,11 @@
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserSurname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserPatronymic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserLogin" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPatronymic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserLogin" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserRole" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_User1" FromRole="User" ToRole="Order" />
           <NavigationProperty Name="Role" Relationship="Self.FK__User__UserRole__398D8EEE" FromRole="User" ToRole="Role" />
         </EntityType>
         <Association Name="FK__OrderProd__Order__403A8C7D">
@@ -268,7 +268,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_User">
+        <Association Name="FK_Order_User1">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -276,7 +276,7 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Order">
-              <PropertyRef Name="OrderClient" />
+              <PropertyRef Name="OrderClientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -319,7 +319,7 @@
             <End Role="PickUpPoint" EntitySet="PickUpPoint" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+          <AssociationSet Name="FK_Order_User1" Association="Self.FK_Order_User1">
             <End Role="User" EntitySet="User" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
@@ -345,7 +345,7 @@
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="OrderDeliveryDate" ColumnName="OrderDeliveryDate" />
                 <ScalarProperty Name="OrderPickupPoint" ColumnName="OrderPickupPoint" />
-                <ScalarProperty Name="OrderClient" ColumnName="OrderClient" />
+                <ScalarProperty Name="OrderClientID" ColumnName="OrderClientID" />
                 <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
               </MappingFragment>
@@ -365,9 +365,9 @@
               <MappingFragment StoreEntitySet="PickUpPoint">
                 <ScalarProperty Name="PickUpPointID" ColumnName="PickUpPointID" />
                 <ScalarProperty Name="PickUpPointIndex" ColumnName="PickUpPointIndex" />
-                <ScalarProperty Name="PickUpPointCity" ColumnName="PickUpPointCity" />
-                <ScalarProperty Name="PickUpPointStreet" ColumnName="PickUpPointStreet" />
-                <ScalarProperty Name="PickUpPointHouse" ColumnName="PickUpPointHouse" />
+                <ScalarProperty Name="PickUpCity" ColumnName="PickUpCity" />
+                <ScalarProperty Name="PickUpStreet" ColumnName="PickUpStreet" />
+                <ScalarProperty Name="PickUpHouse" ColumnName="PickUpHouse" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -380,7 +380,7 @@
                 <ScalarProperty Name="ProductCost" ColumnName="ProductCost" />
                 <ScalarProperty Name="ProductMaxDiscount" ColumnName="ProductMaxDiscount" />
                 <ScalarProperty Name="ProductManufacturer" ColumnName="ProductManufacturer" />
-                <ScalarProperty Name="ProductSupplier" ColumnName="ProductSupplier" />
+                <ScalarProperty Name="ProdcutSupplier" ColumnName="ProdcutSupplier" />
                 <ScalarProperty Name="ProductCategory" ColumnName="ProductCategory" />
                 <ScalarProperty Name="ProductDiscountAmount" ColumnName="ProductDiscountAmount" />
                 <ScalarProperty Name="ProductQuantityInStock" ColumnName="ProductQuantityInStock" />
