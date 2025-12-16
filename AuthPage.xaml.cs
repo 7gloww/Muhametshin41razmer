@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Muhametshin41razmer
 {
@@ -20,9 +21,14 @@ namespace Muhametshin41razmer
     /// </summary>
     public partial class AuthPage : Page
     {
+        private DispatcherTimer simpleTimer;
+        private int blockTime = 10;
         public AuthPage()
         {
             InitializeComponent();
+            simpleTimer = new DispatcherTimer();
+            simpleTimer.Interval = TimeSpan.FromSeconds(1);
+            simpleTimer.Tick += SimpleTimer_Tick;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -36,29 +42,156 @@ namespace Muhametshin41razmer
             }
 
             User user = Muhametshin41Entities.GetContext().User.ToList().Find(p => p.UserLogin == login && p.UserPassword == password);
+
+            string currentCaptcha = captchaOneWord.Text + captchaTwoWord.Text + captchaThreeWord.Text + captchaFourWord.Text;
+
             if (user != null)
             {
-                Manager.MainFrame.Navigate(new ProductPage(user));
-                LoginTB.Text = "";
-                PassTB.Text = "";
+                if (captchaTextBlock.Visibility == Visibility.Visible && captchaTextBox.Visibility == Visibility.Visible)
+                {
+
+
+                    if (captchaTextBox.Text == "")
+                    {
+                        MessageBox.Show("В Captch'у ничего не введено");
+                    }
+                    else
+                    {
+                        if (currentCaptcha != captchaTextBox.Text)
+                        {
+                            MessageBox.Show("Введена неправильная Captcha");
+                            GenerateCaptcha();
+                            SimpleBlockTimer();
+                            captchaTextBox.Text = "";
+                            return;
+                        }
+                        else
+                        {
+                            Manager.MainFrame.Navigate(new ProductPage(user));
+                            LoginTB.Text = "";
+                            PassTB.Text = "";
+                            captchaTextBox.Text = "";
+                            captchaTextBlock.Visibility = Visibility.Collapsed;
+                            captchaTextBox.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                }
+                else
+                {
+                    Manager.MainFrame.Navigate(new ProductPage(user));
+                    LoginTB.Text = "";
+                    PassTB.Text = "";
+                }
             }
             else
             {
-                MessageBox.Show("Введены неверные данные");
-                LoginButton.IsEnabled = false;
-                //Поставить таймер на 10 секунд
-                LoginButton.IsEnabled = true;
+                if (captchaTextBlock.Visibility != Visibility.Visible && captchaTextBox.Visibility != Visibility.Visible)
+                {
+                    MessageBox.Show("Введены неверные данные");
+                    LoginButton.IsEnabled = false;
+                    LoginButton.IsEnabled = true;
+                    captchaTextBlock.Visibility = Visibility.Visible;
+                    captchaTextBox.Visibility = Visibility.Visible;
+                    GenerateCaptcha();
+                }
+                else
+                {
+                    if (captchaTextBox.Text == "")
+                    {
+                        MessageBox.Show("В Captch'у ничего не введено");
+                    }
+                    else
+                    {
+                        if (currentCaptcha != captchaTextBox.Text)
+                        {
+                            MessageBox.Show("Введена неправильная Captcha");
+                            GenerateCaptcha();
+                            SimpleBlockTimer();
+                            captchaTextBox.Text = "";
+                            return;
+                        }
+                        if (currentCaptcha == captchaTextBox.Text && user != null)
+                        {
+                            Manager.MainFrame.Navigate(new ProductPage(user));
+                            LoginTB.Text = "";
+                            PassTB.Text = "";
+                            captchaTextBox.Text = "";
+                            captchaTextBlock.Visibility = Visibility.Collapsed;
+                            captchaTextBox.Visibility = Visibility.Collapsed;
+                        }
+                        else if (currentCaptcha == captchaTextBox.Text && user == null)
+                        {
+                            MessageBox.Show("Введены неверные данные");
+                            LoginButton.IsEnabled = false;
+                            LoginButton.IsEnabled = true;
+                            captchaTextBlock.Visibility = Visibility.Visible;
+                            captchaTextBox.Visibility = Visibility.Visible;
+                            GenerateCaptcha();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Введена неправильная Captcha");
+                            GenerateCaptcha();
+                            SimpleBlockTimer();
+                            captchaTextBox.Text = "";
+                            return;
+                        }
+                    }
+                }
+
             }
         }
 
-        private void LoginTB_TextChanged(object sender, TextChangedEventArgs e)
+        private void GenerateCaptcha()
         {
+            string symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+            Random random = new Random();
+
+            captchaOneWord.Text = symbols[random.Next(0, symbols.Length)].ToString();
+            captchaTwoWord.Text = symbols[random.Next(0, symbols.Length)].ToString();
+            captchaThreeWord.Text = symbols[random.Next(0, symbols.Length)].ToString();
+            captchaFourWord.Text = symbols[random.Next(0, symbols.Length)].ToString();
+        }
+        private void SimpleBlockTimer()
+        {
+            LoginButton.IsEnabled = false;
+            LoginButton.Content = $"Подождите {blockTime} сек.";
+
+            simpleTimer.Start();
         }
 
-        private void PassTB_TextChanged(object sender, TextChangedEventArgs e)
+        private void SimpleTimer_Tick(object sender, EventArgs e)
+        {
+            blockTime--;
+
+            if (blockTime <= 0)
+            {
+                simpleTimer.Stop();
+                LoginButton.IsEnabled = true;
+                LoginButton.Content = "Войти";
+                blockTime = 10;
+            }
+            else
+            {
+                LoginButton.Content = $"Подождите {blockTime} сек.";
+            }
+        }
+        private void GuestButton_Click(object sender, RoutedEventArgs e)
         {
 
+            User guestUser = new User()
+            {
+                UserID = 0,
+                UserSurname = "Гость",
+                UserName = "",
+                UserPatronymic = "",
+                UserLogin = "",
+                UserPassword = "",
+                UserRole = 4
+            };
+
+            Manager.MainFrame.Navigate(new ProductPage(guestUser));
         }
     }
 }

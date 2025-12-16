@@ -34,6 +34,8 @@ namespace Muhametshin41razmer
                     RoleTB.Text = "Менеджер"; break;
                 case 3:
                     RoleTB.Text = "Администратор"; break;
+                case 4:
+                    RoleTB.Text = "Гость"; break;
             }
 
             var currentProducts = Muhametshin41Entities.GetContext().Product.ToList();
