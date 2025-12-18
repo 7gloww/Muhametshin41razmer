@@ -42,6 +42,7 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Кол-во" TextAlignment="Left"
@@ -64,7 +65,6 @@
                          Width="290" FontSize="20" Checked="RButtonDown_Checked"
                          Name="RButtonDown"></RadioButton>
             </StackPanel>
-
             <StackPanel Grid.Column="3" HorizontalAlignment="Right" Margin="10">
                 <TextBlock Text="Фильтрация по скидке " TextAlignment="Center"
                            Width="250" FontSize="20"></TextBlock>
@@ -76,8 +76,15 @@
                     <TextBlock> от 15% и более</TextBlock>
                 </ComboBox>
             </StackPanel>
+            <Button Name="ViewOrderBtn" Content="Корзина" Grid.Column="4" HorizontalAlignment="Right" Margin="200,0,0,0" Click="ViewOrderBtn_Click" Visibility="Collapsed"></Button>
         </Grid>
+
         <ListView Name="ProductListView" Grid.Row="3">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить к заказу" Click="MenuItem_Click"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -103,12 +110,12 @@
                                 </Binding>
                             </Image.Source>
                         </Image>
-                        <TextBlock Text="{Binding ProductName}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" TextWrapping="Wrap" FontWeight="Bold"></TextBlock>
+                        <TextBlock Text="{Binding ProductName}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Text="{Binding ProductDescription}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Text="{Binding ProductManufacturer}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16"></TextBlock>
                         <TextBlock Text="{Binding ProductCost, StringFormat={}{0:0} рублей}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16"></TextBlock>
-                        <TextBlock Text="Скидка" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" FontSize="16" Grid.RowSpan="1"></TextBlock>
-                        <TextBlock Text="{Binding ProductDiscountAmount, StringFormat={}{0} %}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" FontSize="25" Grid.RowSpan="4"></TextBlock>
+                        <TextBlock Text="Скидка" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" FontSize="20" Grid.RowSpan="1"></TextBlock>
+                        <TextBlock Text="{Binding ProductDiscountAmount, StringFormat= {} {0} % }" Opacity="{Binding ProductDiscountAmount}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" FontSize="24" Grid.RowSpan="4"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
